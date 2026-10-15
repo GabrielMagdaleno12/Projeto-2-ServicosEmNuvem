@@ -22,16 +22,6 @@
   > Com base no spec.md, gere o design.md: diagrama de arquitetura, modelo ER, rotas da API, Security Groups e o ADR do RNF-04 (CRUD em Lambda ou container).
 - **O que a IA gerou:** `specs/design.md` com diagrama Mermaid, ER, 18 rotas, tabela de SGs, 4 ADRs e SQL dos relatórios.
 - **Decisão do grupo:**
-  - Aceito: ADR-001 Lambda, SGs separados por função
-  - Rejeitado: bastion EC2, usamos Session Manager
-  - Corrigido: CIDRs; rotas simplificadas
-
-## Entrada 3 · _(título)_
-
-- **Data:**
-- **Ferramenta:**
-- **Prompt:**
-- **O que a IA gerou:**
-- **Decisão do grupo:** Aceito / Rejeitado / Corrigido
-- **Por quê:**
-
+  - Aceito: ADR-001 (CRUD em Lambda), SGs separados por função, EC2 de administração para rodar os scripts SQL no RDS privado.
+  - Rejeitado: acesso à EC2 por SSH com porta 22 aberta; optamos por Session Manager (sem entrada de rede).
+  - Corrigido: CIDRs das subnets; rotas simplificadas; diagramas trocados de Mermaid para PlantUML porque o Mermaid não renderizava.
