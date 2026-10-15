@@ -97,7 +97,7 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 |---|---|---|---|
 | `sg-lambda` | nenhuma | TCP 3306 para `sg-rds`; HTTPS 443 para o prefix list do S3 | Lambdas na VPC |
 | `sg-rds` | TCP 3306 **apenas de** `sg-lambda` e `sg-bastion` | nenhuma necessária | Banco de dados |
-| `sg-bastion` | TCP 22 **somente do IP do grupo** (ou usar Session Manager) | TCP 3306 para `sg-rds` | Rodar scripts SQL |
+| `sg-bastion` | Nenhuma (acesso via Session Manager, sem porta 22 aberta) | TCP 3306 para sg-rds; HTTPS 443 para o Systems Manager | Rodar scripts SQL |
 
 > RDS com `Publicly accessible = No`. Nenhum SG tem entrada `0.0.0.0/0` para o banco.
 
