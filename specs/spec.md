@@ -124,7 +124,7 @@ O detalhamento (ER, colunas, tipos) fica em `specs/design.md`.
 |---|---|---|
 | **RF-01** | CRUD de **Plano**, **Aluno**, **Aula** e **Inscrição**, com relações 1:N (Plano→Aluno) e N:N (Aluno↔Aula) no RDS | HU-01 a HU-05 |
 | **RF-02** | Upload de foto e atestado do aluno ao S3 por URL pré-assinada gerada pelo backend | HU-06 |
-| **RF-03** | Evento `ObjectCreated` no S3 aciona Lambda que gera miniatura (e/ou importa CSV) e grava o resultado no RDS | HU-07, HU-10 |
+| **RF-03** | Evento `ObjectCreated` no S3 aciona Lambda que gera miniatura (e/ou importa CSV) e grava o resultado no RDS | HU-07|
 | **RF-04** | `GET /relatorios/ocupacao-aulas` e `GET /relatorios/alunos-por-plano` no API Gateway, implementados em Lambda com JOIN/GROUP BY | HU-08, HU-09 |
 | **RF-05** | Front-end estático (HTML/JS) publicado em S3 consumindo a API | todas |
 
