@@ -25,3 +25,17 @@
   - Aceito: ADR-001 (CRUD em Lambda), SGs separados por função, EC2 de administração para rodar os scripts SQL no RDS privado.
   - Rejeitado: acesso à EC2 por SSH com porta 22 aberta; optamos por Session Manager (sem entrada de rede).
   - Corrigido: CIDRs das subnets; rotas simplificadas; diagramas trocados de Mermaid para PlantUML porque o Mermaid não renderizava.
+
+## Entrada 3 · Infraestrutura, segurança e revisão da documentação (Aula 3)
+
+- **Data:** 23-10-2026
+- **Ferramenta:** Claude
+- **Prompt:**
+> Revise o repositório contra o enunciado da Aula 3 e corrija: (1) `tasks.md` sem ID, requisito, responsável e status; (2) IDs reais de VPC, subnets, route tables e Security Groups em `docs/seguranca.md`; (3) citar o `academia-sg-lambda` na entrada do `academia-sg-rds`; (4) alinhar o `design.md` com os SGs reais; (5) registrar a Aula 3 no log de IA; (6) prints em `docs/evidencias/`. Diga também se algo precisa mudar na AWS.
+- **O que a IA gerou:** `specs/tasks.md` em tabela (ID, requisito, tarefa, responsável, status); ajuste de `docs/seguranca.md` (origem do RDS = `academia-sg-lambda`); remoção de `sg-bastion` e Session Manager em `specs/design.md`; esta entrada; `docs/evidencias/README.md` com a lista de prints; lista de verificações a fazer no console da AWS.
+- **Decisão do grupo:**
+- Aceito: tabela de tarefas com IDs T-01 a T-29; SG do RDS aceitando a porta 3306 somente do `academia-sg-lambda`.
+- Corrigido: a decisão da Entrada 2 (EC2 de administração com Session Manager) foi revertida. Não há bastion; os scripts SQL rodam pela Lambda `academia-dbinit` dentro da VPC.
+- Pendente (a IA não tem acesso à conta AWS): IDs reais dos recursos e os prints. O grupo preenche a partir do console.
+- Pendente: o grupo deve completar nesta entrada eventuais outros prompts usados na criação da infraestrutura da Aula 3 (VPC, RDS, Lambdas), se houver.
+
