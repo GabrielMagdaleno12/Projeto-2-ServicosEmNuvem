@@ -5,7 +5,8 @@
 
 ## 1. Diagrama de arquitetura
 
-<img width="1586" height="756" alt="image" src="https://github.com/user-attachments/assets/d4a705a8-a711-403b-81da-4bbe4c616eb4" />
+<img width="2102" height="847" alt="image" src="https://github.com/user-attachments/assets/465a0601-adab-437a-9378-4288280009ea" />
+
 
 
 ### Fluxo de upload (RF-02 e RF-03)
