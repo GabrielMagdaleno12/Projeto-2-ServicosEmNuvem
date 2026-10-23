@@ -5,8 +5,9 @@ Região: us-east-1 (Learner Lab). Complementa a seção 4 de `specs/design.md`.
 ## Princípios
 
 - O banco de dados não é acessível pela internet. Ele fica em subnets privadas, com Publicly accessible = Não.
-- A única porta aberta para o banco é a 3306 (MySQL), e apenas para outros Security Groups, nunca para 0.0.0.0/0.
+- A única porta aberta para o banco é a 3306 (MySQL), e somente a partir do Security Group `academia-sg-lambda`, nunca para 0.0.0.0/0.
 - As subnets privadas não têm rota para a internet e não há NAT Gateway (custo). As Lambdas acessam o S3 pelo Gateway Endpoint.
+- Não há bastion nem EC2 de administração: os scripts SQL rodam pela Lambda `academia-dbinit`, que usa o `academia-sg-lambda`.
 - Credenciais do banco ficam em variáveis de ambiente das Lambdas e não são versionadas no Git.
 
 ## Recursos de rede
@@ -25,20 +26,20 @@ Região: us-east-1 (Learner Lab). Complementa a seção 4 de `specs/design.md`.
 
 | Security Group | ID real | Entrada (inbound) | Saída (outbound) | Uso |
 |---|---|---|---|---|
-| `academia-sg-lambda` | _preencher_ | Nenhuma | Restrita ao RDS (TCP 3306 para o `academia-sg-rds`) e ao S3 (HTTPS 443) | Lambdas dentro da VPC |
-| `academia-sg-rds` | _preencher_ | TCP 3306 apenas dos outros Security Groups | Nenhuma necessária | Banco de dados RDS |
+| `academia-sg-lambda` | _preencher_ | Nenhuma | Restrita ao RDS (TCP 3306 para o `academia-sg-rds`) e ao S3 (HTTPS 443) | Lambdas dentro da VPC (CRUD e `academia-dbinit`) |
+| `academia-sg-rds` | _preencher_ | TCP 3306 somente do `academia-sg-lambda` (origem = Security Group, não IP nem CIDR) | Nenhuma necessária | Banco de dados RDS |
 
 ### Por que cada regra existe
 
 - **`academia-sg-lambda` sem entrada:** as Lambdas só iniciam conexões (para o banco e para o S3). Ninguém precisa abrir conexão com elas, então não há regra de entrada.
 - **`academia-sg-lambda` com saída restrita:** a Lambda só precisa falar com o RDS na porta 3306 e com o S3 por HTTPS. Limitar a saída reduz o estrago se a função for comprometida.
-- **`academia-sg-rds` aceitando 3306 só de outros Security Groups:** a origem é um Security Group, e não um IP ou um CIDR. Assim, só os recursos que usam esses SGs (as Lambdas) alcançam o banco, mesmo que os IPs mudem.
+- **`academia-sg-rds` aceitando 3306 só do `academia-sg-lambda`:** a origem é esse Security Group, e não um IP ou um CIDR. Assim, só os recursos que usam o `academia-sg-lambda` (as Lambdas) alcançam o banco, mesmo que os IPs mudem. Nenhum outro SG tem acesso ao banco.
 - **`academia-sg-rds` sem saída:** o banco não inicia conexões para fora.
 - **Sem 0.0.0.0/0 no banco:** nenhuma regra expõe o banco à internet.
 
 ## Como conferir no console
 
-1. VPC > Security Groups > `academia-sg-rds` > aba "Inbound rules": porta 3306 com origem em Security Groups.
+1. VPC > Security Groups > `academia-sg-rds` > aba "Inbound rules": porta 3306 com origem `academia-sg-lambda` (única regra).
 2. VPC > Security Groups > `academia-sg-lambda` > aba "Outbound rules".
 3. RDS > Databases > `academia-db`: "Publicly accessible: No".
 4. VPC > Route tables > `academia-rt-privada` > aba "Routes": sem rota 0.0.0.0/0.
