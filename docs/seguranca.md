@@ -42,10 +42,3 @@ Região: us-east-1 (Learner Lab). Complementa a seção 4 de `specs/design.md`.
 2. VPC > Security Groups > `academia-sg-lambda` > aba "Outbound rules".
 3. RDS > Databases > `academia-db`: "Publicly accessible: No".
 4. VPC > Route tables > `academia-rt-privada` > aba "Routes": sem rota 0.0.0.0/0.
-
-As evidências (prints) ficam em `docs/evidencias/`.
-
-## Pendências
-
-- Preencher a coluna "ID real" com os IDs do console (sem expor segredos).
-- Confirmar os CIDRs das subnets e dos Security Groups reais e ajustar a tabela, se diferirem do design.
