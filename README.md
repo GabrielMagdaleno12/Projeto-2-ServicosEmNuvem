@@ -9,4 +9,5 @@ Landing page: http://academia-frontend.s3-website-us-east-1.amazonaws.com
 - Especificação: [specs/spec.md](specs/spec.md)
 - Design/arquitetura/ADRs: [specs/design.md](specs/design.md)
 - Log de IA: [specs/ia-log.md](specs/ia-log.md)
-- Tarefas: specs/tasks.md (a criar na Aula 3)
+- Tarefas: [specs/tasks.md](specs/tasks.md)
+- Segurança e Security Groups: [docs/seguranca.md](docs/seguranca.md)
