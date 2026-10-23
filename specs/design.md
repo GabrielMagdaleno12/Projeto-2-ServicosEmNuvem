@@ -87,7 +87,7 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 | Recurso | Detalhe |
 |---|---|
 | VPC | `10.0.0.0/16` |
-| Subnet pública | `10.0.1.0/24`, rota `0.0.0.0/0` para Internet Gateway (só o bastion opcional) |
+| Subnet pública | `10.0.1.0/24`, rota `0.0.0.0/0` para Internet Gateway (sem instâncias; não há bastion) |
 | Subnets privadas | `10.0.2.0/24` e `10.0.3.0/24` em AZs distintas (exigência do DB Subnet Group), **sem** rota para internet |
 | NAT Gateway | **Não usar** (custo) |
 | Endpoint | VPC Gateway Endpoint `com.amazonaws.us-east-1.s3` associado à route table privada |
@@ -96,11 +96,10 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 
 | SG | Entrada (inbound) | Saída (outbound) | Uso |
 |---|---|---|---|
-| `sg-lambda` | nenhuma | TCP 3306 para `sg-rds`; HTTPS 443 para o prefix list do S3 | Lambdas na VPC |
-| `sg-rds` | TCP 3306 **apenas de** `sg-lambda` e `sg-bastion` | nenhuma necessária | Banco de dados |
-| `sg-bastion` | Nenhuma (acesso via Session Manager, sem porta 22 aberta) | TCP 3306 para sg-rds; HTTPS 443 para o Systems Manager | Rodar scripts SQL |
+| `academia-sg-lambda` | nenhuma | TCP 3306 para `academia-sg-rds`; HTTPS 443 para o prefix list do S3 | Lambdas na VPC (CRUD e `academia-dbinit`) |
+| `academia-sg-rds` | TCP 3306 **apenas de** `academia-sg-lambda` | nenhuma necessária | Banco de dados |
 
-> RDS com `Publicly accessible = No`. Nenhum SG tem entrada `0.0.0.0/0` para o banco.
+> RDS com `Publicly accessible = No`. Nenhum SG tem entrada `0.0.0.0/0` para o banco. Não há bastion nem EC2 de administração: o schema e os dados de exemplo são aplicados pela Lambda `academia-dbinit`, que usa o `academia-sg-lambda`. Detalhes em `docs/seguranca.md`.
 
 ## 5. Segurança e configuração
 
@@ -156,8 +155,8 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 ```
 /
 ├── README.md
-├── specs/            spec.md · design.md · tasks.md
-├── docs/             ia-log.md · evidencias/
+├── specs/            spec.md · design.md · tasks.md · ia-log.md
+├── docs/             seguranca.md · evidencias/
 ├── sql/              01_schema.sql · 02_seed.sql
 ├── backend/
 │   ├── crud/         handler.py
