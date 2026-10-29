@@ -1,0 +1,18 @@
+# Segredos e configuração local (RNF-02: nada de senha ou chave no repositório)
+.env
+.env.*
+*.pem
+*.key
+credentials
+
+# Pacotes de build das Lambdas (gerados com pip install --target build/...)
+build/
+*.zip
+__pycache__/
+*.pyc
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
