@@ -1,0 +1,19 @@
+<!-- Aula 4: botoes da barra <nav> (ao lado de Planos, Alunos e Aulas) -->
+<button data-tab="arquivos">Arquivos</button>
+<button data-tab="relatorios">Relat&oacute;rios</button>
+
+<!-- Aula 4: secoes, antes de <script src="config.js"> -->
+<section id="arquivos">
+  <form id="f-arquivo">
+    <label>Aluno <select id="arq-aluno" required></select></label>
+    <label>Categoria <select id="arq-cat"><option value="foto">Foto</option><option value="atestado">Atestado</option></select></label>
+    <label>Arquivo (JPG, PNG ou PDF at&eacute; 5 MB) <input id="arq-file" type="file" accept="image/jpeg,image/png,application/pdf" required></label>
+    <button>Enviar</button>
+  </form>
+  <table><thead><tr><th>Categoria</th><th>Arquivo</th><th>Status</th><th>Bytes</th><th>Dimens&otilde;es</th></tr></thead><tbody id="arq-lista"></tbody></table>
+</section>
+
+<section id="relatorios">
+  <h3>Ocupa&ccedil;&atilde;o das aulas</h3><div id="rel-ocupacao"></div>
+  <h3>Alunos por plano</h3><div id="rel-planos"></div>
+</section>
