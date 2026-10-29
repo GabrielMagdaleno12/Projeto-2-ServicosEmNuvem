@@ -15,3 +15,17 @@ Legenda: [x] anexado · [ ] pendente
 | `07-dbinit.png` | Execução da Lambda `academia-dbinit` (schema e seed aplicados) | T-11 | [ ] |
 | `08-api-crud.png` | Testes da API ao vivo: criação, 409 de CPF duplicado, 409 de aula lotada, 204 nas exclusões | T-14 | [ ] |
 | `09-site-s3.png` | Site no S3 listando planos, alunos e aulas | T-13, T-15 | [ ] |
+
+# Evidências da Aula 4
+
+Mesma regra: sem senhas, chaves ou tokens nos prints.
+
+| Arquivo | O que mostrar | Tarefa | Status |
+|---|---|---|---|
+| `a4-01-s3.png` | Bucket `academia-uploads-...` com as pastas `uploads/` e `thumbs/` | T-24, T-25 | [ ] |
+| `a4-02-trigger.png` | Lambda `academia-miniatura`, Configuração → Gatilhos: S3, prefixo `uploads/`, evento `s3:ObjectCreated:*` | T-25 | [ ] |
+| `a4-03-cloudwatch.png` | Log da `academia-miniatura` com "Novo objeto" e "Miniatura criada ... linhas atualizadas no RDS: 1" | T-25 | [ ] |
+| `a4-04-rotas.png` | API Gateway, Rotas: as quatro rotas novas | T-24, T-26, T-27 | [ ] |
+| `a4-05-relatorios.png` | Site, aba Relatórios, com as duas tabelas | T-26, T-27 | [ ] |
+| `a4-06-arquivos.png` | Site, aba Arquivos, com a miniatura, status PROCESSADO, bytes e dimensões | T-24, T-25 | [ ] |
+
