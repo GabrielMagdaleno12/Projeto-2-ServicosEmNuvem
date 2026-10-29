@@ -14,20 +14,21 @@ Região: us-east-1 (Learner Lab). Complementa a seção 4 de `specs/design.md`.
 
 | Recurso | Nome | ID real | Observação |
 |---|---|---|---|
-| VPC | `academia-vpc` | _preencher_ | 10.0.0.0/16 (conforme design.md) |
-| Subnet pública | `academia-publica` | _preencher_ | Rota 0.0.0.0/0 para o Internet Gateway |
-| Subnet privada 1 | `academia-privada-1` | _preencher_ | AZ diferente da privada 2 |
-| Subnet privada 2 | `academia-privada-2` | _preencher_ | Exigência do DB Subnet Group (2 AZs) |
-| Route table pública | `academia-rt-publica` | _preencher_ | 0.0.0.0/0 para o Internet Gateway |
-| Route table privada | `academia-rt-privada` | _preencher_ | Sem rota para a internet; só o Gateway Endpoint do S3 |
+| VPC | `academia-vpc` | `vpc-0a276f9ed4c7a5fff` | 10.0.0.0/16 (conforme design.md) |
+| Subnet pública | `academia-publica` | `subnet-04d90a2cd830eb6bb` | Rota 0.0.0.0/0 para o Internet Gateway |
+| Subnet privada 1 | `academia-privada-1` | `subnet-0fbcacd5674380d2d` | AZ diferente da privada 2 |
+| Subnet privada 2 | `academia-privada-2` | `subnet-0f34d73d1d0dcc22b` | Exigência do DB Subnet Group (2 AZs) |
+| Route table pública | `academia-rt-publica` | `rtb-0a29c691afbc020be` | 0.0.0.0/0 para o Internet Gateway |
+| Route table privada | `academia-rt-privada` | `rtb-0c2d36d5a3214d2a4` | Sem rota para a internet; só o Gateway Endpoint do S3 |
+| Gateway Endpoint do S3 | `com.amazonaws.us-east-1.s3` | `vpce-018f09f45c7a9fd60` | Tipo Gateway, associado à `academia-rt-privada` |
 | RDS | `academia-db` | — | Acessível publicamente: Não; status Available |
 
 ## Security Groups
 
 | Security Group | ID real | Entrada (inbound) | Saída (outbound) | Uso |
 |---|---|---|---|---|
-| `academia-sg-lambda` | _preencher_ | Nenhuma | Restrita ao RDS (TCP 3306 para o `academia-sg-rds`) e ao S3 (HTTPS 443) | Lambdas dentro da VPC (CRUD e `academia-dbinit`) |
-| `academia-sg-rds` | _preencher_ | TCP 3306 somente do `academia-sg-lambda` (origem = Security Group, não IP nem CIDR) | Nenhuma necessária | Banco de dados RDS |
+| `academia-sg-lambda` | `sg-0e899f344f792c9a9` | Nenhuma | Restrita ao RDS (TCP 3306 para o `academia-sg-rds`) e ao S3 (HTTPS 443) | Lambdas dentro da VPC (CRUD e `academia-dbinit`) |
+| `academia-sg-rds` | `sg-0df86188fa2f88af9` | TCP 3306 somente do `academia-sg-lambda` (origem = Security Group, não IP nem CIDR) | Nenhuma necessária | Banco de dados RDS |
 
 ### Por que cada regra existe
 
