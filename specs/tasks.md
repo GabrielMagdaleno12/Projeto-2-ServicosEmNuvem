@@ -26,8 +26,8 @@ Legenda de status: [x] feito · [ ] pendente. Requisitos (RF/RNF) conforme `spec
 | T-16 | Entrega | Criar este `specs/tasks.md` | Gabriel Henrique | [x] |
 | T-17 | RNF-01 | Criar `docs/seguranca.md` | Gabriel Henrique | [x] |
 | T-18 | RNF-01 | Preencher os IDs reais de VPC, subnets, route tables e Security Groups em `docs/seguranca.md` | Gabriel Henrique | [ ] |
-| T-19 | RF-01 | Subir os scripts SQL para `sql/` (`01_schema.sql` e `02_seed.sql`) | Gabriel Henrique | [ ] |
-| T-20 | RF-01 / RF-05 | Subir o código para `backend/` e `frontend/`. Feito: `presign`, `miniatura`, `relatorios` e o trecho `frontend/aula4.*`. Falta: Lambdas de CRUD e `academia-dbinit`, `app.js`, `index.html` e `config.example.js` | Gabriel Henrique | [ ] |
+| T-19 | RF-01 | Subir os scripts SQL para `sql/` (`01_schema.sql` e `02_seed.sql`) | Gabriel Henrique | [x] |
+| T-20 | RF-01 / RF-05 | Subir o código para `backend/` (`crud`, `dbinit`, `presign`, `miniatura`, `relatorios`) e `frontend/` (`index.html`, `app.js`, `config.example.js`, `aula4.*`) | Gabriel Henrique | [x] |
 | T-21 | Entrega | Anexar os prints em `docs/evidencias/` (lista em `docs/evidencias/README.md`) | Eduardo Barbizan | [ ] |
 | T-22 | Entrega | Registrar o uso de IA da Aula 3 em `specs/ia-log.md` | Gabriel Henrique | [x] |
 | T-23 | RNF-04 | Alinhar `specs/design.md` com a rede real (sem bastion; sg-lambda e sg-rds) | Gabriel Henrique | [x] |
