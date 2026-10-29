@@ -39,3 +39,16 @@
 - Pendente (a IA não tem acesso à conta AWS): IDs reais dos recursos e os prints. O grupo preenche a partir do console.
 - Pendente: o grupo deve completar nesta entrada eventuais outros prompts usados na criação da infraestrutura da Aula 3 (VPC, RDS, Lambdas), se houver.
 
+## Entrada 4 · Upload, evento S3 → Lambda → RDS e relatórios (Aula 4)
+
+- **Data:** 28-10-2026
+- **Ferramenta:** Claude
+- **Prompt:**
+  > Com base em `specs/spec.md` e `specs/design.md`, gere as Lambdas `presign`, `miniatura` e `relatorios` (Python 3.12, MySQL, PyMySQL, Pillow) para RF-02, RF-03 e RF-04, e explique como criar o que falta na AWS (bucket de uploads, gatilho S3, rotas do API Gateway) sem IaC e só com a LabRole.
+- **O que a IA gerou:** os três handlers; os comandos de criação dos recursos na AWS; o trecho de front para upload e relatórios (`frontend/aula4.js`); os textos de README, design e ia-log.
+- **Decisão do grupo:**
+  - Aceito: URL pré-assinada SigV4; prefixos `uploads/` (gatilho) e `thumbs/` (saída) para evitar loop de eventos; reuso da conexão com o RDS fora do handler; validação do limite de 5 MB também na Lambda Miniatura.
+  - Corrigido: a primeira versão assumia colunas que não existiam em `arquivo`; os handlers foram adaptados ao schema real (`tipo`, `chave_thumb`, sem coluna de status) e o script SQL extra foi descartado. A variável da senha do banco ficou padronizada como `DB_PASSWORD`. Foi acrescentada a rota `GET /alunos/{id}/arquivos`, porque o bucket é privado e o front precisa de URLs pré-assinadas para exibir as miniaturas.
+  - Rejeitado: bucket de uploads público e upload passando pelo API Gateway/Lambda (limite de payload).
+- **Validação:** teste ao vivo em 28/10/2026: relatórios com HTTP 200; upload de um PNG 400x300 gerou a miniatura em `thumbs/` e atualizou a linha em `arquivo` (123011 bytes, 400x300) em cerca de 1 s; o CloudWatch registrou "Novo objeto" e "Miniatura criada ... linhas atualizadas no RDS: 1"; o site exibiu a miniatura com status PROCESSADO.
+

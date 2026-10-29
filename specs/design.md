@@ -1,7 +1,7 @@
 # Design — Sistema de Gestão de Academia
 
 > Complementa `specs/spec.md`. Região: `us-east-1` (padrão do Learner Lab).
-> Status: **proposto**. Atualizar na Aula 4 para refletir o que realmente está rodando.
+> Status: **implementado e em execução** (Aula 4, 28/10/2026). Este documento reflete o que está rodando na conta do Learner Lab.
 
 ## 1. Diagrama de arquitetura
 
@@ -10,11 +10,11 @@
 
 
 ### Fluxo de upload (RF-02 e RF-03)
-1. O front pede `POST /alunos/{id}/arquivos/presign` com nome e tipo do arquivo.
-2. A Lambda Presign valida tipo e tamanho e devolve uma URL `PUT` pré-assinada (válida por 5 min) e a chave do objeto.
+1. O front valida tipo (JPG, PNG, PDF) e tamanho (até 5 MB) e pede `POST /alunos/{id}/arquivos/presign` com nome, tipo MIME, tamanho e categoria (`foto` ou `atestado`).
+2. A Lambda Presign valida de novo, **grava a linha em `arquivo`** (por isso ela fica na VPC) e devolve uma URL `PUT` pré-assinada (válida por 5 min), a chave `uploads/{aluno}/{uuid}.{ext}` e o `arquivo_id`.
 3. O navegador envia o arquivo **direto ao S3** com essa URL.
-4. O S3 emite `ObjectCreated` e dispara a Lambda Miniatura, que gera a miniatura, salva em `thumbs/` e grava a chave e os metadados no RDS.
-5. O front consulta `GET /alunos/{id}` e exibe a miniatura.
+4. O S3 emite `ObjectCreated` e dispara a Lambda Miniatura, que confere o tamanho real do objeto (acima de 5 MB o objeto é apagado do S3 e a linha de `arquivo` é removida), gera a miniatura 150x150 JPEG, salva em `thumbs/` e faz `UPDATE` em `arquivo` (`chave_thumb`, `tamanho_bytes`, `largura`, `altura`). O processamento fica registrado no CloudWatch Logs. Para PDF (atestado) só o tamanho é gravado.
+5. O front consulta `GET /alunos/{id}/arquivos` (o bucket é privado, a resposta traz URLs `GET` pré-assinadas de 15 min) e exibe a miniatura.
 
 > Evitar loop: o gatilho do S3 filtra pelo prefixo `uploads/`; as miniaturas ficam em `thumbs/`.
 
@@ -22,6 +22,8 @@
 
 <img width="418" height="627" alt="image" src="https://github.com/user-attachments/assets/40c60a0e-74ee-4357-b5a5-0dc9b10f21c4" />
 
+
+> Tabela `arquivo` como implementada: `id, aluno_id, tipo (foto|atestado), chave_s3, chave_thumb, tamanho_bytes, largura, altura, criado_em`. Não há coluna de status: um arquivo está **PENDENTE** enquanto `tamanho_bytes` é nulo e **PROCESSADO** depois que a Lambda Miniatura roda.
 
 ### Regras de integridade
 - `aluno.cpf` é `UNIQUE`.
@@ -58,7 +60,8 @@ Base: `https://{api-id}.execute-api.us-east-1.amazonaws.com` (muda a cada recria
 | DELETE | `/aulas/{id}` | Remove aula | crud | HU-04 |
 | POST | `/aulas/{id}/inscricoes` | Inscreve aluno (409 lotada/duplicada) | crud | HU-05 |
 | DELETE | `/inscricoes/{id}` | Cancela inscrição | crud | HU-05 |
-| POST | `/alunos/{id}/arquivos/presign` | Gera URL pré-assinada | presign | HU-06 |
+| POST | `/alunos/{id}/arquivos/presign` | Valida, registra em `arquivo` e gera URL `PUT` pré-assinada | presign | HU-06 |
+| GET | `/alunos/{id}/arquivos` | Lista arquivos do aluno com URLs `GET` pré-assinadas e status | presign | HU-06/07 |
 | GET | `/relatorios/ocupacao-aulas` | Inscritos, vagas e % por aula | relatorios | HU-08 |
 | GET | `/relatorios/alunos-por-plano` | Alunos e receita por plano | relatorios | HU-09 |
 
@@ -96,7 +99,7 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 
 | SG | Entrada (inbound) | Saída (outbound) | Uso |
 |---|---|---|---|
-| `academia-sg-lambda` | nenhuma | TCP 3306 para `academia-sg-rds`; HTTPS 443 para o prefix list do S3 | Lambdas na VPC (CRUD e `academia-dbinit`) |
+| `academia-sg-lambda` | nenhuma | TCP 3306 para `academia-sg-rds`; HTTPS 443 para o prefix list do S3 | Lambdas na VPC (CRUD, `academia-dbinit`, `academia-presign`, `academia-miniatura` e `academia-relatorios`) |
 | `academia-sg-rds` | TCP 3306 **apenas de** `academia-sg-lambda` | nenhuma necessária | Banco de dados |
 
 > RDS com `Publicly accessible = No`. Nenhum SG tem entrada `0.0.0.0/0` para o banco. Não há bastion nem EC2 de administração: o schema e os dados de exemplo são aplicados pela Lambda `academia-dbinit`, que usa o `academia-sg-lambda`. Detalhes em `docs/seguranca.md`.
@@ -105,7 +108,9 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 
 - Host, usuário e senha do banco ficam em **variáveis de ambiente das Lambdas**, configuradas pelo console. Nada disso vai para o Git (`.env` no `.gitignore`).
 - Permissões via `LabRole` (não é possível criar roles no Learner Lab).
-- Bucket de uploads **privado**; leitura via URL pré-assinada `GET` ou através do próprio backend.
+- Bucket de uploads **privado**; leitura via URL pré-assinada `GET`.
+- O limite de 5 MB é validado em três pontos: no front, na geração da URL (tamanho declarado) e **de novo na Lambda Miniatura** (tamanho real do objeto), porque a URL pré-assinada não limita o tamanho.
+- A Lambda Miniatura lê o S3 pelo VPC Gateway Endpoint (sem NAT). O Pillow vai empacotado no ZIP da função.
 - Bucket do front público somente para leitura (`s3:GetObject`).
 - CORS: no API Gateway (origem do site, métodos `GET,POST,PUT,DELETE,OPTIONS`) e no bucket de uploads (`PUT`, header `Content-Type`).
 - Bônus possível: mover credenciais para Secrets Manager / Parameter Store.
@@ -170,5 +175,5 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 
 - [ ] Confirmar engine/versão real do RDS.
 - [ ] Anotar IDs reais de subnets e SGs (sem expor segredos).
-- [ ] Ajustar rotas que mudarem na implementação.
+- [x] Ajustar rotas que mudarem na implementação (acrescentada `GET /alunos/{id}/arquivos`; presign passou a gravar em `arquivo`).
 - [ ] Inserir prints em `docs/evidencias/`.

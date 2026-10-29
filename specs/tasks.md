@@ -27,7 +27,7 @@ Legenda de status: [x] feito · [ ] pendente. Requisitos (RF/RNF) conforme `spec
 | T-17 | RNF-01 | Criar `docs/seguranca.md` | A definir | [x] |
 | T-18 | RNF-01 | Preencher os IDs reais de VPC, subnets, route tables e Security Groups em `docs/seguranca.md` | A definir | [ ] |
 | T-19 | RF-01 | Subir os scripts SQL para `sql/` (`01_schema.sql` e `02_seed.sql`) | A definir | [ ] |
-| T-20 | RF-01 / RF-05 | Subir o código das Lambdas para `backend/` e o front-end para `frontend/` | A definir | [ ] |
+| T-20 | RF-01 / RF-05 | Subir o código para `backend/` e `frontend/`. Feito: `presign`, `miniatura`, `relatorios` e o trecho `frontend/aula4.*`. Falta: Lambdas de CRUD e `academia-dbinit`, `app.js`, `index.html` e `config.example.js` | A definir | [ ] |
 | T-21 | Entrega | Anexar os prints em `docs/evidencias/` (lista em `docs/evidencias/README.md`) | A definir | [ ] |
 | T-22 | Entrega | Registrar o uso de IA da Aula 3 em `specs/ia-log.md` | A definir | [x] |
 | T-23 | RNF-04 | Alinhar `specs/design.md` com a rede real (sem bastion; sg-lambda e sg-rds) | A definir | [x] |
@@ -36,12 +36,14 @@ Legenda de status: [x] feito · [ ] pendente. Requisitos (RF/RNF) conforme `spec
 
 | ID | Requisito | Tarefa | Responsável | Status |
 |---|---|---|---|---|
-| T-24 | RF-02 / HU-06 | Upload de foto e atestado por URL pré-assinada (Lambda `presign`, CORS no bucket de uploads) | A definir | [ ] |
-| T-25 | RF-03 / HU-07 | Lambda de miniatura disparada por ObjectCreated em `uploads/`, gravando os metadados no RDS | A definir | [ ] |
-| T-26 | RF-04 / HU-08 | `GET /relatorios/ocupacao-aulas` | A definir | [ ] |
-| T-27 | RF-04 / HU-09 | `GET /relatorios/alunos-por-plano` | A definir | [ ] |
-| T-28 | RNF-04 | Atualizar `specs/design.md` para refletir o que realmente está rodando (engine e versão do RDS, rotas) | A definir | [ ] |
-| T-29 | RNF-03 | Escrever no README o passo a passo para recriar tudo em uma nova sessão do Learner Lab | A definir | [ ] |
+| T-24 | RF-02 / HU-06 | Upload de foto e atestado por URL pré-assinada (Lambda `presign`, CORS no bucket de uploads) | A definir | [x] |
+| T-25 | RF-03 / HU-07 | Lambda de miniatura disparada por ObjectCreated em `uploads/`, gravando os metadados no RDS | A definir | [x] |
+| T-26 | RF-04 / HU-08 | `GET /relatorios/ocupacao-aulas` | A definir | [x] |
+| T-27 | RF-04 / HU-09 | `GET /relatorios/alunos-por-plano` | A definir | [x] |
+| T-28 | RNF-04 | Atualizar `specs/design.md` para refletir o que está rodando (fluxo de upload, tabela `arquivo`, rotas, SGs) | A definir | [x] |
+| T-29 | RNF-03 | Escrever no README o passo a passo para recriar tudo em uma nova sessão do Learner Lab | A definir | [x] |
+| T-30 | RF-02 / RF-03 / RF-04 | Código das Lambdas da Aula 4 em `backend/` e trecho do front em `frontend/`; teste ao vivo de ponta a ponta (upload → miniatura → RDS → CloudWatch) | A definir | [x] |
+| T-31 | RNF-04 | Confirmar a engine e a versão reais do RDS no console e registrá-las em `specs/design.md` (ADR-002) | A definir | [ ] |
 
 ## Observações
 
