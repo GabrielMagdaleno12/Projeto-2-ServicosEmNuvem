@@ -3,7 +3,7 @@
 Handler único atrás de um API Gateway HTTP API (payload v2.0).
 Configuração via variáveis de ambiente da Lambda (nada de segredo no Git):
   DB_HOST, DB_USER, DB_PASSWORD, DB_NAME (padrão: academia)
-Dependência: PyMySQL (empacotar no zip, ver infra/04_lambda_crud.sh).
+Dependência: PyMySQL (empacotar no zip, ver README, passos 4 e 5).
 """
 import json
 import os
