@@ -142,7 +142,7 @@ GROUP BY p.id, p.nome, p.valor_mensal;
 
 ### ADR-002 · Banco relacional: MySQL no RDS
 - **Contexto:** Relações 1:N e N:N, necessidade de JOIN/GROUP BY nos relatórios.
-- **Decisão:** Amazon RDS **MySQL** `db.t3.micro`, subnet privada.
+- **Decisão:** Amazon RDS **MySQL 8.0.46** (engine confirmada no console) `db.t3.micro`, 20 GB gp2, zona única, sem backup automático, subnet privada.
 - **Consequências:** Modelo relacional natural para o domínio; custo baixo; precisa de DB Subnet Group com 2 AZs.
 
 ### ADR-003 · Upload por URL pré-assinada

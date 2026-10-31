@@ -43,7 +43,8 @@ Legenda de status: [x] feito · [ ] pendente. Requisitos (RF/RNF) conforme `spec
 | T-28 | RNF-04 | Atualizar `specs/design.md` para refletir o que está rodando (fluxo de upload, tabela `arquivo`, rotas, SGs) | Gustavo Frainer | [x] |
 | T-29 | RNF-03 | Escrever no README o passo a passo para recriar tudo em uma nova sessão do Learner Lab | André Drumond | [x] |
 | T-30 | RF-02 / RF-03 / RF-04 | Código das Lambdas da Aula 4 em `backend/` e trecho do front em `frontend/`; teste ao vivo de ponta a ponta (upload → miniatura → RDS → CloudWatch) | Gustavo Frainer | [x] |
-| T-31 | RNF-04 | Confirmar a engine e a versão reais do RDS no console e registrá-las em `specs/design.md` (ADR-002) | André Drumond | [ ] |
+| T-31 | RNF-04 | Confirmar a engine e a versão reais do RDS no console e registrá-las em `specs/design.md` (ADR-002) | André Drumond | [x] |
+| T-32 | RNF-03 | Recriar todo o ambiente em um novo Learner Lab (31/10/2026), com custo mínimo (RDS parado ao final), e atualizar IDs e URLs na documentação | Gabriel Henrique | [x] |
 
 ## Observações
 
