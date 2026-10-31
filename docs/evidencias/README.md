@@ -1,5 +1,7 @@
 # Evidências da Aula 3
 
+> Os prints sem sufixo `-novo` foram tirados no lab original; o ambiente foi recriado igual em 31/10/2026 (ver README), com outros IDs.
+
 Prints do console da AWS e do sistema funcionando. Salve os arquivos nesta pasta com os nomes abaixo. Não incluir senhas, chaves de acesso nem tokens nos prints.
 
 Legenda: [x] anexado · [ ] pendente
@@ -9,11 +11,11 @@ Legenda: [x] anexado · [ ] pendente
 | `01-vpc.png` | VPC `academia-vpc` (10.0.0.0/16) e suas 3 subnets, com os IDs visíveis | T-01 a T-03, T-18 | [x] |
 | `02-rt-publica.png` | Route table `academia-rt-publica`, aba Routes: 0.0.0.0/0 para o Internet Gateway | T-04 | [x] |
 | `03-rt-privada.png` | Route table `academia-rt-privada`, aba Routes: sem 0.0.0.0/0 e com o Gateway Endpoint do S3 | T-05 | [x] |
-| `04-sg-rds-inbound.png` | `academia-sg-rds`, Inbound rules: só TCP 3306 com origem `academia-sg-lambda` | T-08 | [ ] |
+| `04-sg-rds-inbound.png` | `academia-sg-rds`, Inbound rules: só TCP 3306 com origem `academia-sg-lambda` (lab recriado) | T-08 | [x] |
 | `05-sg-lambda-outbound.png` | `academia-sg-lambda`, Outbound rules: TCP 3306 para o `academia-sg-rds` e HTTPS 443 para o S3 | T-07 | [x] |
 | `06-rds-privado.png` | RDS `academia-db`: status Available e Publicly accessible = No | T-10 | [x] |
 | `07-dbinit.png` | Execução da Lambda `academia-dbinit` (schema e seed aplicados) | T-11 | [x] |
-| `08-api-crud.png` | Testes da API ao vivo: criação, 409 de CPF duplicado, 409 de aula lotada, 204 nas exclusões | T-14 | [ ] |
+| `08-api-crud.png` | Testes da API ao vivo (lab recriado): 201 na criação, 409 de CPF duplicado, 409 de plano em uso, 201 na inscrição, 204 na exclusão, relatórios 200 | T-14 | [x] |
 | `09-site-s3.png` | Site no S3 listando planos, alunos e aulas | T-13, T-15 | [x] |
 
 # Evidências da Aula 4
@@ -29,3 +31,13 @@ Mesma regra: sem senhas, chaves ou tokens nos prints.
 | `a4-05-relatorios.png` | Site, aba Relatórios, com as duas tabelas | T-26, T-27 | [x] |
 | `a4-06-arquivos.png` | Site, aba Arquivos, com a miniatura, status PROCESSADO, bytes e dimensões | T-24, T-25 | [x] |
 
+# Evidências do ambiente recriado (31/10/2026)
+
+Prints do novo Learner Lab (conta 147963671881), tirados depois de recriar tudo.
+
+| Arquivo | O que mostra |
+|---|---|
+| `novo-01-vpc-mapa.png` | Mapa de recursos da VPC `academia-vpc`: 3 subnets em 2 AZs, 3 route tables, Internet Gateway e Gateway Endpoint do S3 |
+| `novo-06-rds-sg.png` | RDS `academia-db`: regra de segurança `academia-sg-rds` com origem no `academia-sg-lambda` |
+| `novo-a4-04-rotas.png` | API Gateway `academia-api`: rotas |
+| `novo-lambdas.png` | Lambdas `academia-*` em Python 3.12 |
