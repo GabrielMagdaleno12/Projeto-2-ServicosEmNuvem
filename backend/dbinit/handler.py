@@ -1,7 +1,7 @@
 """Lambda de uso único: aplica os scripts versionados em sql/ no RDS privado.
 
 Como o RDS não tem acesso público, a própria Lambda (dentro da VPC, com sg-lambda)
-roda o schema e o seed. Os .sql são copiados para o zip pelo infra/04_lambda_crud.sh.
+roda o schema e o seed. Os .sql são copiados para o zip na criação da Lambda (ver README, passo 4).
 Idempotente no schema (CREATE ... IF NOT EXISTS); o seed só roda se plano estiver vazio.
 """
 import os
