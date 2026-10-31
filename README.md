@@ -3,9 +3,13 @@ Projeto 2 · Serviços em Nuvem · 2026.02
 
 Integrantes: André Drumond, Eduardo Barbizan, Gabriel Henrique, Gustavo Frainer.
 
-Landing page: http://academia-frontend.s3-website-us-east-1.amazonaws.com
+Landing page: http://academia-landing-147963671881.s3-website-us-east-1.amazonaws.com
 
-Sistema (front-end com CRUD, upload e relatórios): http://academia-frontend-365180416721.s3-website-us-east-1.amazonaws.com
+Sistema (front-end com CRUD, upload e relatórios): http://academia-frontend-147963671881.s3-website-us-east-1.amazonaws.com
+
+API (HTTP API, 19 rotas): `https://fy5la5bb48.execute-api.us-east-1.amazonaws.com`
+
+> **Ambiente atual:** em 31/10/2026 o ambiente inteiro foi recriado, igual ao original, em um novo Learner Lab (conta 147963671881), porque o lab anterior estava no limite de crédito. Os prints marcados como do lab original em `docs/evidencias/` continuam válidos porque a arquitetura é a mesma; só os IDs mudaram. O RDS fica **parado** quando não está em uso (custo); para demonstrar, iniciar `academia-db` e esperar `Available`.
 
 ## Documentação
 - Especificação: [specs/spec.md](specs/spec.md)
@@ -79,6 +83,8 @@ Depois siga a seção da Aula 4 abaixo (uploads, miniatura e relatórios).
 6. Front: o conteúdo de `frontend/aula4.js` fica no fim do `app.js` e as seções de `frontend/aula4-secoes.html` entram no `index.html`; depois é só publicar no bucket do site.
 
 **Teste executado (28/10/2026):** upload de um PNG 400x300 → miniatura 150x150 em `thumbs/` → `tamanho_bytes`, `largura`, `altura` e `chave_thumb` gravados no RDS em cerca de 1 s → log "Miniatura criada ... linhas atualizadas no RDS: 1" no CloudWatch. Os dois relatórios respondem HTTP 200 e aparecem na aba Relatórios do site.
+
+**Teste executado (31/10/2026, ambiente recriado):** criação de aluno (201), exclusão de plano em uso (409), CPF inválido (400), upload de um PNG 800x600 → miniatura → `tamanho_bytes`, largura e altura gravados no RDS (status PROCESSADO), e os dois relatórios com HTTP 200.
 
 **Recriar em uma nova sessão do Learner Lab (RNF-03):**
 1. Iniciar o lab e esperar o RDS ficar `Available` (o endpoint não muda ao parar e iniciar).
