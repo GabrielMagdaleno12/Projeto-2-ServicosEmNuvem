@@ -41,3 +41,6 @@ Prints do novo Learner Lab (conta 147963671881), tirados depois de recriar tudo.
 | `novo-06-rds-sg.png` | RDS `academia-db`: regra de segurança `academia-sg-rds` com origem no `academia-sg-lambda` |
 | `novo-a4-04-rotas.png` | API Gateway `academia-api`: rotas |
 | `novo-lambdas.png` | Lambdas `academia-*` em Python 3.12 |
+| `novo-09-site-planos.png`, `novo-09-site-alunos.png`, `novo-09-site-aulas.png` | Site no S3 do lab novo: abas Planos, Alunos e Aulas com dados vindos do RDS |
+| `novo-a4-05-relatorios.png` | Site, aba Relatórios, com as duas tabelas (ocupação das aulas e alunos por plano) |
+| `novo-a4-06-arquivos.png` | Site, aba Arquivos: foto enviada, miniatura, status PROCESSADO, bytes e dimensões gravados no RDS |
