@@ -17,6 +17,8 @@ API (HTTP API, 19 rotas): `https://fy5la5bb48.execute-api.us-east-1.amazonaws.co
 - Log de IA: [specs/ia-log.md](specs/ia-log.md)
 - Tarefas: [specs/tasks.md](specs/tasks.md)
 - Segurança e Security Groups: [docs/seguranca.md](docs/seguranca.md)
+- Evidências (prints): [docs/evidencias/](docs/evidencias/README.md)
+- Por aula: [Aula 1](#aula-1--especificação) · [Aula 2](#aula-2--design-e-arquitetura) · [Aula 3](#aula-3--infraestrutura-e-crud) · [Aula 4](#aula-4--upload-evento-s3--lambda--rds-e-relatórios)
 
 ## Estrutura do repositório
 
@@ -59,6 +61,33 @@ Região `us-east-1`. Tudo é criado pelo console ou CloudShell, sem IaC. As Lamb
 **6. Front-end.** Bucket do site com *static website hosting* e leitura pública só do site (`s3:GetObject`). Criar `frontend/config.js` a partir de `config.example.js` com a URL da API (a URL muda se a API for recriada) e publicar os arquivos no bucket.
 
 Depois siga a seção da Aula 4 abaixo (uploads, miniatura e relatórios).
+
+## Aula 1 · Especificação
+
+**Entrega:** `specs/spec.md` (e a Entrada 1 de `specs/ia-log.md`).
+
+- **Domínio:** gestão de academia. Problema, 3 personas (Marina, a recepcionista; Carlos, o gerente; Júlia, a aluna, fora do escopo desta versão), escopo e modelo conceitual (Plano 1:N Aluno; Aluno N:N Aula via Inscrição; Aluno possui arquivos no S3).
+- **Histórias de usuário com critérios de aceite:** HU-01 a HU-09 (alunos, planos, aulas, inscrição, upload de foto e atestado, miniatura automática e dois relatórios). A HU-10 (importação de CSV) foi descartada por falta de tempo.
+- **Requisitos:** como RF-01 a RF-05 e RNF-01 a RNF-05 se aplicam ao domínio (seção 6 e 7 da especificação), prioridades e riscos.
+
+## Aula 2 · Design e arquitetura
+
+**Entrega:** `specs/design.md` (e a Entrada 2 de `specs/ia-log.md`).
+
+- Diagrama de arquitetura, fluxo de upload, modelo de dados (ER) e regras de integridade; scripts SQL versionados em `sql/`.
+- **Rotas da API** (tabela com método, Lambda e história de cada rota) e SQL dos relatórios.
+- **Rede e Security Groups** (`academia-sg-lambda` e `academia-sg-rds`; banco em subnet privada, sem acesso pela internet).
+- **ADRs:** ADR-001 CRUD em Lambda (e não em container, RNF-04), ADR-002 MySQL no RDS, ADR-003 upload por URL pré-assinada, ADR-004 front-end estático no S3.
+
+## Aula 3 · Infraestrutura e CRUD
+
+**Entrega:** 23/10 (`specs/tasks.md`, tarefas T-01 a T-23; `docs/seguranca.md`; `docs/evidencias/`, prints 01 a 09).
+
+- **Rede (RNF-01):** VPC `academia-vpc` (10.0.0.0/16), uma subnet pública e duas privadas em zonas diferentes, route tables pública e privada (sem NAT Gateway) e VPC Gateway Endpoint do S3.
+- **Banco:** RDS MySQL privado (`Publicly accessible = Não`); schema e dados de exemplo aplicados pela Lambda `academia-dbinit` (`sql/01_schema.sql` e `sql/02_seed.sql`), sem bastion nem EC2.
+- **Segurança:** porta 3306 do banco liberada **somente** para o `academia-sg-lambda` (origem = Security Group). Detalhes e IDs em `docs/seguranca.md`.
+- **CRUD (RF-01):** Lambda `academia-crud` (`backend/crud/`) com planos, alunos, aulas e inscrições (409 para plano em uso, CPF duplicado e aula lotada) atrás do API Gateway HTTP API, com CORS.
+- **Front-end:** site estático no S3 (`frontend/`), lendo a URL da API de `config.js`.
 
 ## Aula 4 · Upload, evento S3 → Lambda → RDS e relatórios
 
