@@ -1,6 +1,6 @@
 # Evidências da Aula 3
 
-> Os prints sem sufixo `-novo` foram tirados no lab original; o ambiente foi recriado igual em 31/10/2026 (ver README), com outros IDs.
+> Os prints sem sufixo `-novo` foram tirados no lab original; o ambiente foi recriado igual em 31/10/2026 e de novo em 17/11/2026 (ver README), com outros IDs; os IDs vigentes estão em `docs/seguranca.md`.
 
 Prints do console da AWS e do sistema funcionando. Salve os arquivos nesta pasta com os nomes abaixo. Não incluir senhas, chaves de acesso nem tokens nos prints.
 
@@ -33,7 +33,7 @@ Mesma regra: sem senhas, chaves ou tokens nos prints.
 
 # Evidências do ambiente recriado (31/10/2026)
 
-Prints do novo Learner Lab (conta 147963671881), tirados depois de recriar tudo.
+Prints do primeiro Learner Lab recriado (conta 147963671881), tirados depois de recriar tudo. Em 17/11/2026 o ambiente foi recriado outra vez na conta 727687112230, com a mesma arquitetura e outros IDs.
 
 | Arquivo | O que mostra |
 |---|---|
