@@ -3,13 +3,13 @@ Projeto 2 · Serviços em Nuvem · 2026.02
 
 Integrantes: André Drumond, Eduardo Barbizan, Gabriel Henrique, Gustavo Frainer.
 
-Landing page: http://academia-landing-147963671881.s3-website-us-east-1.amazonaws.com
+Landing page: http://academia-landing-727687112230.s3-website-us-east-1.amazonaws.com
 
-Sistema (front-end com CRUD, upload e relatórios): http://academia-frontend-147963671881.s3-website-us-east-1.amazonaws.com
+Sistema (front-end com CRUD, upload e relatórios): http://academia-frontend-727687112230.s3-website-us-east-1.amazonaws.com
 
-API (HTTP API, 19 rotas): `https://fy5la5bb48.execute-api.us-east-1.amazonaws.com`
+API (HTTP API, 19 rotas): `https://wa68n04bk1.execute-api.us-east-1.amazonaws.com`
 
-> **Ambiente atual:** em 31/10/2026 o ambiente inteiro foi recriado, igual ao original, em um novo Learner Lab (conta 147963671881), porque o lab anterior estava no limite de crédito. Os prints marcados como do lab original em `docs/evidencias/` continuam válidos porque a arquitetura é a mesma; só os IDs mudaram. O RDS fica **parado** quando não está em uso (custo); para demonstrar, iniciar `academia-db` e esperar `Available`.
+> **Ambiente atual:** o ambiente inteiro já foi recriado, igual ao original, duas vezes em novos Learner Labs porque o crédito do lab anterior chegava ao limite: em 31/10/2026 e em 17/11/2026 (conta 727687112230, a atual). Os prints em `docs/evidencias/` são do lab original e do primeiro lab recriado e continuam válidos porque a arquitetura é a mesma; só os IDs mudaram (os IDs vigentes estão em `docs/seguranca.md`). O RDS fica **parado** quando não está em uso (custo); para demonstrar, iniciar `academia-db` e esperar `Available`.
 
 ## Documentação
 - Especificação: [specs/spec.md](specs/spec.md)
@@ -32,7 +32,7 @@ API (HTTP API, 19 rotas): `https://fy5la5bb48.execute-api.us-east-1.amazonaws.co
 | `docs/evidencias/` | Prints do console da AWS e do sistema funcionando |
 | `sql/` | `01_schema.sql` e `02_seed.sql` (aplicados pela Lambda `academia-dbinit`) |
 | `backend/` | Código das Lambdas (Python 3.12): `crud`, `dbinit`, `presign`, `miniatura`, `relatorios` |
-| `frontend/` | Site estático (HTML/JS) publicado no S3 |
+| `frontend/` | Site estático (HTML/JS) publicado no S3; `frontend/landing/` é a landing page (bucket próprio) |
 
 ## Como criar tudo do zero (RNF-03 e RNF-05)
 
@@ -113,7 +113,7 @@ Depois siga a seção da Aula 4 abaixo (uploads, miniatura e relatórios).
 
 **Teste executado (28/10/2026):** upload de um PNG 400x300 → miniatura 150x150 em `thumbs/` → `tamanho_bytes`, `largura`, `altura` e `chave_thumb` gravados no RDS em cerca de 1 s → log "Miniatura criada ... linhas atualizadas no RDS: 1" no CloudWatch. Os dois relatórios respondem HTTP 200 e aparecem na aba Relatórios do site.
 
-**Teste executado (31/10/2026, ambiente recriado):** criação de aluno (201), exclusão de plano em uso (409), CPF inválido (400), upload de um PNG 800x600 → miniatura → `tamanho_bytes`, largura e altura gravados no RDS (status PROCESSADO), e os dois relatórios com HTTP 200.
+**Teste executado (31/10/2026, ambiente recriado, e repetido em 17/11/2026 na conta atual):** criação de aluno (201), exclusão de plano em uso (409), CPF inválido (400), upload de um PNG 800x600 → miniatura → `tamanho_bytes`, largura e altura gravados no RDS (status PROCESSADO), e os dois relatórios com HTTP 200.
 
 **Recriar em uma nova sessão do Learner Lab (RNF-03):**
 1. Iniciar o lab e esperar o RDS ficar `Available` (o endpoint não muda ao parar e iniciar).
