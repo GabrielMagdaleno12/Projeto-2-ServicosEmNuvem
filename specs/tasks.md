@@ -45,6 +45,7 @@ Legenda de status: [x] feito · [ ] pendente. Requisitos (RF/RNF) conforme `spec
 | T-30 | RF-02 / RF-03 / RF-04 | Código das Lambdas da Aula 4 em `backend/` e trecho do front em `frontend/`; teste ao vivo de ponta a ponta (upload → miniatura → RDS → CloudWatch) | Gustavo Frainer | [x] |
 | T-31 | RNF-04 | Confirmar a engine e a versão reais do RDS no console e registrá-las em `specs/design.md` (ADR-002) | André Drumond | [x] |
 | T-32 | RNF-03 | Recriar todo o ambiente em um novo Learner Lab (31/10/2026), com custo mínimo (RDS parado ao final), e atualizar IDs e URLs na documentação | Gabriel Henrique | [x] |
+| T-33 | RNF-03 | Recriar o ambiente de novo em outro Learner Lab (17/11/2026), a partir do repositório, porque o crédito do lab anterior chegou a US$ 50; testar de ponta a ponta e atualizar IDs e URLs | Gabriel Henrique | [x] |
 
 ## Observações
 

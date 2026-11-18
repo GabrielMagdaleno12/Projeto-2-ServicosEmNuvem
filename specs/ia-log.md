@@ -56,7 +56,7 @@
 - **Data:** 31-10-2026
 - **Ferramenta:** Claude (com acesso ao console da AWS pelo navegador e ao CloudShell)
 - **Prompt:**
-  > O laboratório está com US$ 45 de 50. Você consegue recriar o mesmo ambiente em outro lab? Antes de recriar, garanta que o RDS não gere os mesmos custos do lab anterior.
+  > O laboratório está com US$ 45 de 50. Você consegue criar tudo igual em outro lab? Antes de recriar, garanta que o RDS não vai gastar tanto quanto no lab anterior.
 - **O que a IA gerou:** scripts de CloudShell com AWS CLI (rede, RDS, buckets, Lambdas, API Gateway, front) e a recriação do ambiente na conta nova; a landing page foi baixada do site antigo e republicada em um bucket novo; atualização dos IDs na documentação.
 - **Decisão do grupo:**
   - Aceito: RDS no tamanho mínimo (db.t3.micro, 20 GB gp2, zona única, sem backup automático, sem Performance Insights) e **parado ao final de cada sessão**; sem NAT Gateway, sem IP elástico e sem EC2.
@@ -65,6 +65,20 @@
   - Limitação: senhas do banco foram digitadas pelo próprio integrante no CloudShell; a IA não as viu nem as gravou.
 - **Validação:** criação de aluno (201), exclusão de plano em uso (409), CPF inválido (400), upload de PNG 800x600 gerando miniatura e atualizando o RDS (status PROCESSADO), relatórios com HTTP 200, e RDS parado ao final.
 
+## Entrada 6 · Segunda recriação do ambiente, em outra conta (17/11/2026)
+
+- **Data:** 17-11-2026
+- **Ferramenta:** Claude (com acesso ao console da AWS pelo navegador e ao CloudShell)
+- **Prompt:**
+  > Essa conta que usamos bateu 50 dólares. Me loguei em outra aqui, você consegue replicar o projeto nela?
+- **O que a IA gerou:** scripts de CloudShell com AWS CLI que clonam este repositório e recriam rede, Security Groups, RDS, buckets, Lambdas (com os handlers corretos), API Gateway com 19 rotas e CORS, gatilho do S3 e publicação do site; teste de ponta a ponta (CPF inválido 400, plano em uso 409, criação 201, upload, miniatura PROCESSADO e relatórios 200); atualização de IDs e URLs na documentação.
+- **Decisão do grupo:**
+  - Aceito: mesmo desenho e mesmo custo mínimo (RDS db.t3.micro, parado ao final; sem NAT, sem IP elástico e sem EC2 nossa). A senha do banco foi gerada aleatoriamente e fica só nas variáveis das Lambdas.
+  - Corrigido: a landing page antiga não estava no repositório e foi perdida com o lab anterior; foi recriada como uma página simples e agora é versionada em `frontend/landing/`.
+  - Observação: a conta tinha uma instância EC2 que não é do projeto (`Servidor_Vendas`); não foi alterada.
+
 ## Reflexão final sobre o uso de IA
+
+> Rascunho escrito pela IA a partir do que aconteceu no projeto; o grupo deve revisar e ajustar com suas palavras antes da entrega.
 
 A IA acelerou muito a escrita da especificação, do design e do código das Lambdas, e principalmente a repetição do ambiente na AWS por CLI, o que tornou possível recriar tudo em poucas horas. Ela também errou de forma relevante: assumiu colunas que não existiam na tabela `arquivo`, errou o nome do handler de três Lambdas e encerrou recursos errados por engano. Por isso, tudo o que ela gerou foi conferido por teste (chamadas à API, logs do CloudWatch e consultas ao banco) e nada foi aceito só porque parecia certo. O aprendizado principal é que a IA é boa para gerar e repetir, mas a validação e as decisões de custo e segurança (RDS privado, sem NAT, SG por origem, RDS parado quando não usado) precisam ser do grupo.
