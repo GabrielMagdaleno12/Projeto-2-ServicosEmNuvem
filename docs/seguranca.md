@@ -1,6 +1,6 @@
 # Segurança e Security Groups
 
-Região: us-east-1 (Learner Lab, conta 147963671881 — ambiente recriado em 31/10/2026; os IDs abaixo são os do lab atual). Complementa a seção 4 de `specs/design.md`.
+Região: us-east-1 (Learner Lab, conta 727687112230 — ambiente recriado em 17/11/2026 a partir deste repositório; os IDs abaixo são os do lab atual). Complementa a seção 4 de `specs/design.md`.
 
 ## Princípios
 
@@ -14,21 +14,21 @@ Região: us-east-1 (Learner Lab, conta 147963671881 — ambiente recriado em 31/
 
 | Recurso | Nome | ID real | Observação |
 |---|---|---|---|
-| VPC | `academia-vpc` | `vpc-08f235f8cf88f1f6a` | 10.0.0.0/16 (conforme design.md) |
-| Subnet pública | `academia-publica` | `subnet-003da3abd4ec7290e` | Rota 0.0.0.0/0 para o Internet Gateway |
-| Subnet privada 1 | `academia-privada-1` | `subnet-07daca3850209400b` | AZ diferente da privada 2 |
-| Subnet privada 2 | `academia-privada-2` | `subnet-02f22098f68d28092` | Exigência do DB Subnet Group (2 AZs) |
-| Route table pública | `academia-rt-publica` | `rtb-0e4de6402f2015ab9` | 0.0.0.0/0 para o Internet Gateway |
-| Route table privada | `academia-rt-privada` | `rtb-002c4304579c32e16` | Sem rota para a internet; só o Gateway Endpoint do S3 |
-| Gateway Endpoint do S3 | `com.amazonaws.us-east-1.s3` | `vpce-089c0144da58d7c5f` | Tipo Gateway, associado à `academia-rt-privada` |
-| RDS | `academia-db` | `academia-db.clwj6lfoldvx.us-east-1.rds.amazonaws.com` | MySQL 8.0.46, db.t3.micro; Acessível publicamente: Não |
+| VPC | `academia-vpc` | `vpc-0b524a398aba541ab` | 10.0.0.0/16 (conforme design.md) |
+| Subnet pública | `academia-publica` | `subnet-0c428c5aa8feed6b8` | Rota 0.0.0.0/0 para o Internet Gateway |
+| Subnet privada 1 | `academia-privada-1` | `subnet-090a10367497eab81` | AZ diferente da privada 2 |
+| Subnet privada 2 | `academia-privada-2` | `subnet-01a412ad0cf47d66c` | Exigência do DB Subnet Group (2 AZs) |
+| Route table pública | `academia-rt-publica` | `rtb-0fdbc14e8ddcd05ec` | 0.0.0.0/0 para o Internet Gateway |
+| Route table privada | `academia-rt-privada` | `rtb-0bb665728c1792eab` | Sem rota para a internet; só o Gateway Endpoint do S3 |
+| Gateway Endpoint do S3 | `com.amazonaws.us-east-1.s3` | `vpce-0d28f370744a50889` | Tipo Gateway, associado à `academia-rt-privada` |
+| RDS | `academia-db` | `academia-db.ct2ihogecbfl.us-east-1.rds.amazonaws.com` | MySQL 8.0.46, db.t3.micro; Acessível publicamente: Não |
 
 ## Security Groups
 
 | Security Group | ID real | Entrada (inbound) | Saída (outbound) | Uso |
 |---|---|---|---|---|
-| `academia-sg-lambda` | `sg-057e00eb0f68c6ad8` | Nenhuma | Restrita ao RDS (TCP 3306 para o `academia-sg-rds`) e ao S3 (HTTPS 443) | Lambdas dentro da VPC (CRUD e `academia-dbinit`) |
-| `academia-sg-rds` | `sg-0bccfea07cac4678c` | TCP 3306 somente do `academia-sg-lambda` (origem = Security Group, não IP nem CIDR) | Nenhuma necessária | Banco de dados RDS |
+| `academia-sg-lambda` | `sg-0633cdea25bd2505a` | Nenhuma | Restrita ao RDS (TCP 3306 para o `academia-sg-rds`) e ao S3 (HTTPS 443) | Lambdas dentro da VPC (CRUD e `academia-dbinit`) |
+| `academia-sg-rds` | `sg-0c881fa68207de160` | TCP 3306 somente do `academia-sg-lambda` (origem = Security Group, não IP nem CIDR) | Nenhuma necessária | Banco de dados RDS |
 
 ### Por que cada regra existe
 
